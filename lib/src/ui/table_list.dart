@@ -30,15 +30,7 @@ class TableList extends StatelessWidget {
     return ListView.builder(
       itemCount: snapshot.data.tabledata.length,
       itemBuilder: (BuildContext context, int index) {
-        return DataTable(
-          columns:[
-          ] ,
-          rows:[
-            DataRow(cells: [
-              DataCell(Text(snapshot.data.tabledata[index].position.toString()))
-            ])
-          ] ,
-        );
+       return Text("Hello World");
       },
     );
   }
