@@ -32,6 +32,7 @@ class TableList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return DataTable(
           columns:[
+            DataColumn(label: Text("Postition"),),
           ] ,
           rows:[
             DataRow(cells: [
