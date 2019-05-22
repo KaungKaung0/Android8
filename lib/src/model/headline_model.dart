@@ -1,16 +1,22 @@
 class HeadlineModel {
+  int _page;
+  int _totalpage;
   List<_Data> _results = [];
 
   HeadlineModel.fromJson(Map<String, dynamic> parsedJson) {
-    print(parsedJson['data'].length);
     List<_Data> temp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       _Data result = _Data(parsedJson['data'][i]);
       temp.add(result);
     }
+   _page = parsedJson['page'];
+   _totalpage = parsedJson['totalpage'];
     _results = temp;
   }
+  int get page => _page;
+  int get totalpage => _totalpage;
   List<_Data> get tabledata => _results;
+
 }
 
 class _Data {

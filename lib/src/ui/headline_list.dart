@@ -2,19 +2,100 @@ import 'package:flutter/material.dart';
 import 'package:android8/src/blocs/headline_bloc.dart';
 import 'package:android8/src/model/headline_model.dart';
 
-class HeadlineList extends StatelessWidget {
+class ListState extends StatefulWidget {
+  @override
+  HeadlineList createState() => HeadlineList();
+}
+
+class HeadlineList extends State<ListState> {
+
+void initState(){
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     bloc.fetchTableList();
     return Scaffold(
       appBar: AppBar(
-        title: Text('MNL TODAY'),
+        title: Text('FOOTBALL DAILY'),
       ),
       body: StreamBuilder(
         stream: bloc.headlineData,
         builder: (context, AsyncSnapshot<HeadlineModel> snapshot) {
           if (snapshot.hasData) {
-            return buildList(snapshot);
+            return ListView.builder(
+              itemCount: snapshot.data.tabledata.length,
+              itemBuilder: (
+                BuildContext context,
+                int index,
+              ) {
+                Color color = Theme.of(context).primaryColor;
+                String urlToImage =
+                    snapshot.data.tabledata[index].urlToImage.toString();
+                String title = snapshot.data.tabledata[index].title.toString();
+                String author =
+                    snapshot.data.tabledata[index].author.toString();
+                String name = snapshot.data.tabledata[index].name.toString();
+                String publishedAt =
+                    snapshot.data.tabledata[index].publishedAt.toString();
+                String description =
+                    snapshot.data.tabledata[index].description.toString();
+                return Column(
+                  children: <Widget>[
+                    Image.network(
+                      urlToImage,
+                      fit: BoxFit.cover,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(32),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: Text(
+                                    title,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  author + " | " + name + " | " + publishedAt,
+                                  style: TextStyle(
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    description,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildButtonColumn(
+                              color, Icons.watch_later, 'Read Later'),
+                          _buildButtonColumn(color, Icons.more, 'Raad More'),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
@@ -26,83 +107,10 @@ class HeadlineList extends StatelessWidget {
     );
   }
 
-  Widget buildList(AsyncSnapshot<HeadlineModel> snapshot) {
-    return ListView.builder(
-      itemCount: snapshot.data.tabledata.length,
-      itemBuilder: (BuildContext context, int index) {
-        Color color = Theme.of(context).primaryColor;
-        String urlToImage =
-            snapshot.data.tabledata[index].urlToImage.toString();
-        String title = snapshot.data.tabledata[index].title.toString();
-        String author = snapshot.data.tabledata[index].author.toString();
-        String name = snapshot.data.tabledata[index].name.toString();
-        String publishedAt =
-            snapshot.data.tabledata[index].publishedAt.toString();
-        String description =
-            snapshot.data.tabledata[index].description.toString();
-        return Column(
-          children: <Widget>[
-            Image.network(
-              urlToImage,
-              fit: BoxFit.cover,
-            ),
-            Container(
-              padding: const EdgeInsets.all(32),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          author + " | " + name + " | " + publishedAt,
-                          style: TextStyle(
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            description,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildButtonColumn(color, Icons.watch_later, 'Read Later'),
-                  _buildButtonColumn(color, Icons.more, 'Raad More'),
-                  
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Column _buildButtonColumn(Color color, IconData icon, String label) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
-      
       children: [
         Icon(icon, color: color),
         Container(
@@ -150,7 +158,6 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
         ),
       ],
     );
-    
   }
 
   void _toggleFavorite() {

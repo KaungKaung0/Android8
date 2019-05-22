@@ -5,11 +5,11 @@ import 'package:android8/src/model/headline_model.dart';
 
 class HeadlinesApiProvider{
   Client client = Client();
-  final _apiKey = '123456789';
+  final _apiKey = '\$'+'2y\$'+'10\$'+'Ji9lc1fBNSfHKKcztLIrseur0CtBHn\\\'/IuPLD9bWKWYVT5poFC7ESC';
 
   Future<HeadlineModel> fetchTableList() async {
     print("api connecting");
-    final response = await client.get("https://still-river-53063.herokuapp.com/api/v1/top-headlines/1/");
+    final response = await client.get("https://still-river-53063.herokuapp.com/api/v1/top-headlines/?apiKey=$_apiKey");
 
     if(response.statusCode == 200){
       return HeadlineModel.fromJson(json.decode(response.body));
@@ -18,4 +18,4 @@ class HeadlinesApiProvider{
       throw Exception('Failed to load post');
     }
   }
-}
+} 
