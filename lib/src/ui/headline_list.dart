@@ -8,10 +8,10 @@ class ListState extends StatefulWidget {
 }
 
 class HeadlineList extends State<ListState> {
+  void initState() {
+    super.initState();
+  }
 
-void initState(){
-  super.initState();
-}
   @override
   Widget build(BuildContext context) {
     bloc.fetchTableList();
@@ -42,10 +42,23 @@ void initState(){
                     snapshot.data.tabledata[index].description.toString();
                 return Column(
                   children: <Widget>[
-                    Image.network(
-                      urlToImage,
-                      fit: BoxFit.cover,
-                    ),
+                    urlToImage == null
+                        ? Container(
+                            child: Image.asset(
+                              'images/placeholder.png',
+                              width: 600,
+                              height: 240,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Container(
+                            child: Image.network(
+                              urlToImage,
+                              width: 600,
+                              height: 240,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                     Container(
                       padding: const EdgeInsets.all(32),
                       child: Row(
