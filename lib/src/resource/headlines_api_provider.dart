@@ -9,7 +9,7 @@ class HeadlinesApiProvider{
 
   Future<HeadlineModel> fetchTableList() async {
     print("api connecting");
-    final response = await client.get("https://still-river-53063.herokuapp.com/api/v1/top-headlines/?apiKey=$_apiKey");
+    final response = await client.get("https://androidprojectapi.herokuapp.com/api/v1/top-headlines/?apiKey=$_apiKey");
 
     if(response.statusCode == 200){
       return HeadlineModel.fromJson(json.decode(response.body));
